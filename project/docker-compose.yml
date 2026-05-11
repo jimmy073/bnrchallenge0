@@ -1,0 +1,30 @@
+services:
+
+  db:
+    image: mysql:8
+    container_name: bnr-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 26irakiza
+      MYSQL_DATABASE: bnr
+    ports:
+      - "3307:3306"
+
+  backend:
+    build:
+      context: ./licensing
+    container_name: bnr-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/bnr
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 26irakiza
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: bnr-frontend
+    ports:
+      - "3000:3000"
